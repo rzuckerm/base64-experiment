@@ -2,7 +2,7 @@
 
 This is an experiment to see if I can find the shortest length base64 string
 that uses all 64 base64 characters with only ASCII characters from code 32
-(`' '`) through 126 (`'~'`).
+(`' '`) through 126 (`'~'`) for the input.
 
 It concatenates a set of randomly generated non-repeating 4-byte base64 chunks
 that are not in the concatenated base64 string (if that fails, duplicates are
