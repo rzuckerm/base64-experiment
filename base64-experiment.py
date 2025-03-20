@@ -4,22 +4,23 @@ import sys
 
 
 class Base64:
-    def __init__(self):
-        self.encode = {}
-        self.decode = {}
-        for a in range(32, 127):
-            ac = chr(a)
-            for b in range(32, 127):
-                bc = chr(b)
-                for c in range(32, 127):
-                    cc = chr(b)
-                    s_in = ac + bc + cc
-                    s_out = b64encode(s_in.encode("ascii")).decode("ascii")
-                    if len(s_out) == 4:
-                        self.encode[s_in] = s_out
-                        self.decode[s_out] = s_in
+    DECODE = {}
 
-        self.decode_list = list(self.decode)
+    def __init__(self):
+        if not Base64.DECODE:
+            Base64.DECODE = {}
+            for a in range(32, 127):
+                ac = chr(a)
+                for b in range(32, 127):
+                    bc = chr(b)
+                    for c in range(32, 127):
+                        cc = chr(b)
+                        s_in = ac + bc + cc
+                        s_out = b64encode(s_in.encode("ascii")).decode("ascii")
+                        if len(s_out) == 4:
+                            Base64.DECODE[s_out] = s_in
+
+        self.decode_list = list(Base64.DECODE)
         random.shuffle(self.decode_list)
         self.encode_str = ""
         self.decode_str = ""
@@ -28,8 +29,9 @@ class Base64:
         for n, decode_chunk in enumerate(self.decode_list):
             if sum(c not in self.decode_str for c in decode_chunk) >= count:
                 self.decode_str += decode_chunk
-                self.encode_str += self.decode[decode_chunk]
-                del self.decode_list[n]
+                self.encode_str += Base64.DECODE[decode_chunk]
+                self.decode_list[n] = self.decode_list[-1]
+                del self.decode_list[-1]
                 return True
 
         return False
