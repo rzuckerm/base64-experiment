@@ -83,7 +83,6 @@ def main():
             best_decode_str = decode_str
             best_decode_len = decode_len
             best_encode_str = encode_str
-            best_encode_len = len(encode_str)
             show_results(best_encode_str, best_decode_str)
             if best_decode_len == 64:
                 break
