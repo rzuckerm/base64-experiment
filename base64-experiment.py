@@ -1,4 +1,5 @@
 from base64 import b64encode
+from typing import Generator
 import random
 import sys
 
@@ -62,8 +63,12 @@ class Base64:
         return self.encode_str, self.decode_str
 
 
-def show_pass(n: int, num_passes):
-    print(f"*** {n} of {num_passes} ***\r", end="", flush=True)
+def show_pass(n: int, num_passes: int):
+    pass_str = f"{n}"
+    if num_passes > 0:
+        pass_str += f" of {num_passes}"
+
+    print(f"*** {pass_str} ***\r", end="", flush=True)
 
 
 def show_results(best_encode_str: str, best_decode_str: str):
@@ -72,13 +77,25 @@ def show_results(best_encode_str: str, best_decode_str: str):
     print(f"best output: {len(best_decode_str):3d}: '{best_decode_str}'")
 
 
+def run_pass(num_passes: int) -> Generator[int, None, None]:
+    n = 1
+    if num_passes > 0:
+        while n <= num_passes:
+            yield n
+            n += 1
+    else:
+        while True:
+            yield n
+            n += 1
+
+
 def main():
     num_passes = int(sys.argv[1]) if len(sys.argv[1]) >= 1 else 1000
     best_encode_str = ""
     best_decode_str = ""
     best_decode_len = -1
-    for n in range(1, num_passes + 1):
-        if n % 100 == 0 or n == num_passes:
+    for n in run_pass(num_passes):
+        if n % 100 == 0:
             show_pass(n, num_passes)
 
         encode_str, decode_str = Base64().select_encode_decode_string()
@@ -92,6 +109,7 @@ def main():
             if best_decode_len == 64:
                 break
 
+    show_pass(n, num_passes)
     show_results(best_encode_str, best_decode_str)
 
 

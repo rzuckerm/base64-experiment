@@ -11,7 +11,7 @@ until the 64 base64 characters are used.
 This is repeated several times, and the shortest base64 string and the
 corresponding input string is displayed.
 
-So far, the best input and output is this:
+One of the solutions is this:
 
 ```
 best input:   48: '!  }gggIIT55;qqs!!Gjjb??=~~2$$+;;i::x..4kk,ppnoo'
@@ -25,4 +25,5 @@ python base64-experiment.py [<num_passes>]
 ```
 
 where `<num_passes>` is the number of passes to run. If not specified, `1000`
-is used.
+is used. If `<num_passes>` is less that or equal to zero, the script runs
+until the "best output" length is 64.
