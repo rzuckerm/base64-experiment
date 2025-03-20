@@ -45,9 +45,13 @@ class Base64:
 
             num_unique = len(set(self.decode_str))
 
-        print(f"input:       {len(self.encode_str):3d}: '{self.encode_str}'")
-        print(f"output:      {len(self.decode_str):3d}: '{self.decode_str}'")
         return self.encode_str, self.decode_str
+
+
+def show_results(best_encode_str: str, best_decode_str: str):
+    print()
+    print(f"best input:  {len(best_encode_str):3d}: '{best_encode_str}'")
+    print(f"best output: {len(best_decode_str):3d}: '{best_decode_str}'")
 
 
 def main():
@@ -56,7 +60,7 @@ def main():
     best_decode_str = ""
     best_decode_len = -1
     for n in range(1, num_passes + 1):
-        print(f"*** {n} of {num_passes} ***")
+        print(f"*** {n} of {num_passes} ***\r", end="", flush=True)
         encode_str, decode_str = Base64().select_encode_decode_string()
         decode_len = len(decode_str)
         if best_decode_len < 0 or decode_len < best_decode_len:
@@ -64,11 +68,12 @@ def main():
             best_decode_len = decode_len
             best_encode_str = encode_str
             best_encode_len = len(encode_str)
+            show_results(best_encode_str, best_decode_str)
+            if best_decode_len == 64:
+                break
 
-        print(f"best input:  {best_encode_len:3d}: '{best_encode_str}'")
-        print(f"best output: {best_decode_len:3d}: '{best_decode_str}'")
-        if best_decode_len == 64:
-            break
+    show_results(best_encode_str, best_decode_str)
+
 
 if __name__ == "__main__":
     main()
