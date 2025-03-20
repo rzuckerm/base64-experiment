@@ -1,5 +1,6 @@
 from base64 import b64encode
 import random
+import sys
 
 
 class Base64:
@@ -33,7 +34,7 @@ class Base64:
 
         return False
 
-    def select_decode_string(self) -> tuple[str, str]:
+    def select_encode_decode_string(self) -> tuple[str, str]:
         num_unique = 0
         while num_unique < 64:
             for count in range(4, 0, -1):
@@ -48,12 +49,13 @@ class Base64:
 
 
 def main():
+    num_passes = int(sys.argv[1]) if len(sys.argv[1]) >= 1 else 1000
     best_encode_str = ""
     best_decode_str = ""
     best_decode_len = -1
-    for n in range(1, 10001):
-        print(f"*** {n} ***")
-        encode_str, decode_str = Base64().select_decode_string()
+    for n in range(1, num_passes + 1):
+        print(f"*** {n} of {num_passes} ***")
+        encode_str, decode_str = Base64().select_encode_decode_string()
         decode_len = len(decode_str)
         if best_decode_len < 0 or decode_len < best_decode_len:
             best_decode_str = decode_str

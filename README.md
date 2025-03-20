@@ -17,3 +17,12 @@ So far, the best input and output is this:
 best input:   51: '5]]>vv*44&TT3pppkkL::.jjlXXh~~\//"..K  [11zOO8;;|??'
 best output:  68: 'NV1dPnZ2KjQ0JlRUM3BwcGtrTDo6LmpqbFhYaH5+XC8vIi4uSyAgWzExek9PODs7fD8/'
 ```
+
+## Running
+
+```
+python base64-experiment.py [<num_passes>]
+```
+
+where `<num_passes>` is the number of passes to run. If not specified, `1000`
+is used.
