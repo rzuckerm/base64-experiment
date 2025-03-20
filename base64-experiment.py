@@ -17,31 +17,47 @@ class Base64:
                         cc = chr(b)
                         s_in = ac + bc + cc
                         s_out = b64encode(s_in.encode("ascii")).decode("ascii")
-                        if len(s_out) == 4:
+                        if len(set(s_out)) == 4:
                             Base64.DECODE[s_out] = s_in
 
         self.decode_list = list(Base64.DECODE)
         random.shuffle(self.decode_list)
+        self.decode_list_len = len(self.decode_list)
         self.encode_str = ""
         self.decode_str = ""
 
-    def select_decode_chunk(self, count: int) -> bool:
-        for n, decode_chunk in enumerate(self.decode_list):
-            if sum(c not in self.decode_str for c in decode_chunk) >= count:
+    def select_decode_chunk(self):
+        n = 0
+        candidates = {m: (-1, "") for m in range(4, 0, -1)}
+        decode_set = set(self.decode_str)
+        while n < self.decode_list_len:
+            decode_chunk = self.decode_list[n]
+            num_unique = len(set(decode_chunk) - decode_set)
+            if num_unique == 0:
+                self.decode_list_len -= 1
+                self.decode_list[n] = self.decode_list[self.decode_list_len]
+            else:
+                if not candidates[num_unique][1]:
+                    candidates[num_unique] = (n, decode_chunk)
+
+                if num_unique == 4:
+                    break
+
+                n += 1
+
+        for n, decode_chunk in candidates.values():
+            if decode_chunk:
                 self.decode_str += decode_chunk
                 self.encode_str += Base64.DECODE[decode_chunk]
-                self.decode_list[n] = self.decode_list[-1]
-                del self.decode_list[-1]
-                return True
-
-        return False
+                self.decode_list_len -= 1
+                self.decode_list[n] = self.decode_list[self.decode_list_len]
+                break
 
     def select_encode_decode_string(self) -> tuple[str, str]:
         num_unique = 0
         while num_unique < 64:
-            for count in range(4, 0, -1):
-                if self.select_decode_chunk(count):
-                    break
+            if self.select_decode_chunk():
+                break
 
             num_unique = len(set(self.decode_str))
 

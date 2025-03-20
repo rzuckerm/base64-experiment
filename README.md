@@ -14,8 +14,8 @@ corresponding input string is displayed.
 So far, the best input and output is this:
 
 ```
-best input:   51: '5]]>vv*44&TT3pppkkL::.jjlXXh~~\//"..K  [11zOO8;;|??'
-best output:  68: 'NV1dPnZ2KjQ0JlRUM3BwcGtrTDo6LmpqbFhYaH5+XC8vIi4uSyAgWzExek9PODs7fD8/'
+best input:   48: '!  }gggIIT55;qqs!!Gjjb??=~~2$$+;;i::x..4kk,ppnoo'
+best output:  64: 'ISAgfWdnZ0lJVDU1O3FxcyEhR2pqYj8/PX5+MiQkKzs7aTo6eC4uNGtrLHBwbm9v'
 ```
 
 ## Running
