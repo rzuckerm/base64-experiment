@@ -19,17 +19,17 @@ class Base64:
                         self.encode[s_in] = s_out
                         self.decode[s_out] = s_in
 
-        self.base64_chars = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
         self.decode_list = list(self.decode)
+        random.shuffle(self.decode_list)
         self.encode_str = ""
         self.decode_str = ""
 
     def select_decode_chunk(self, count: int) -> bool:
-        for i in range(100000):
-            decode_chunk = random.choice(self.decode_list)
+        for n, decode_chunk in enumerate(self.decode_list):
             if sum(c not in self.decode_str for c in decode_chunk) >= count:
                 self.decode_str += decode_chunk
                 self.encode_str += self.decode[decode_chunk]
+                del self.decode_list[n]
                 return True
 
         return False
