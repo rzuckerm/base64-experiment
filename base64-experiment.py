@@ -56,9 +56,7 @@ class Base64:
     def select_encode_decode_string(self) -> tuple[str, str]:
         num_unique = 0
         while num_unique < 64:
-            if self.select_decode_chunk():
-                break
-
+            self.select_decode_chunk()
             num_unique = len(set(self.decode_str))
 
         return self.encode_str, self.decode_str
