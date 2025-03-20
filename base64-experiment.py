@@ -26,7 +26,7 @@ class Base64:
         self.encode_str = ""
         self.decode_str = ""
 
-    def select_decode_chunk(self):
+    def select_decode_chunk(self) -> int:
         n = 0
         candidates = {m: (-1, "") for m in range(4, 0, -1)}
         decode_set = set(self.decode_str)
@@ -53,13 +53,17 @@ class Base64:
                 self.decode_list[n] = self.decode_list[self.decode_list_len]
                 break
 
+        return len(set(self.decode_str))
+
     def select_encode_decode_string(self) -> tuple[str, str]:
-        num_unique = 0
-        while num_unique < 64:
-            self.select_decode_chunk()
-            num_unique = len(set(self.decode_str))
+        while self.select_decode_chunk() < 64:
+            pass
 
         return self.encode_str, self.decode_str
+
+
+def show_pass(n: int, num_passes):
+    print(f"*** {n} of {num_passes} ***\r", end="", flush=True)
 
 
 def show_results(best_encode_str: str, best_decode_str: str):
@@ -74,13 +78,16 @@ def main():
     best_decode_str = ""
     best_decode_len = -1
     for n in range(1, num_passes + 1):
-        print(f"*** {n} of {num_passes} ***\r", end="", flush=True)
+        if n % 100 == 0 or n == num_passes:
+            show_pass(n, num_passes)
+
         encode_str, decode_str = Base64().select_encode_decode_string()
         decode_len = len(decode_str)
         if best_decode_len < 0 or decode_len < best_decode_len:
             best_decode_str = decode_str
             best_decode_len = decode_len
             best_encode_str = encode_str
+            show_pass(n, num_passes)
             show_results(best_encode_str, best_decode_str)
             if best_decode_len == 64:
                 break
