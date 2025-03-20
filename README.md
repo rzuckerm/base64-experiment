@@ -25,5 +25,5 @@ python base64-experiment.py [<num_passes>]
 ```
 
 where `<num_passes>` is the number of passes to run. If not specified, `1000`
-is used. If `<num_passes>` is less that or equal to zero, the script runs
+is used. If `<num_passes>` is less than or equal to zero, the script runs
 until the "best output" length is 64.
